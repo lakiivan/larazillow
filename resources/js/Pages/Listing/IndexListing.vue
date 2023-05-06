@@ -1,29 +1,12 @@
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-    <Box v-for="listing in listings" :key="listing.id">
-      <div>
-        <Link :href="route('listing.show',{listing: listing.id})">
-          <ListingPrice :price="listing.price" class="text-2xl font-bold" />
-          <ListingSpace :listing="listing" class="text-lg" />
-          <ListingAddress :listing="listing" class="text-gray-500" />
-        </Link>
-      </div>
-      <div>
-        <Link :href="route('listing.edit',{listing: listing.id})">Edit</Link>
-      </div>
-      <div>
-        <Link :href="route('listing.show',{listing: listing.id})" method="DELETE" as="button">DELETE</Link>
-      </div>
-    </Box>
+    <SingleListingComponent v-for="listing in listings" :key="listing.id" :listing="listing" />
   </div>
 </template>
 
 <script setup>
-import {Link} from '@inertiajs/vue3'
-import Box from '@/Components/UI/Box.vue'
-import ListingAddress from '@/Components/ListingAddress.vue'
-import ListingSpace from '@/Components/UI/ListingSpace.vue'
-import ListingPrice from '@/Components/UI/ListingPrice.vue'
+import SingleListingComponent from '@/Pages/Listing/Index/Components/SingleListingComponent.vue'
+
 
 defineProps ({
   listings: Array,

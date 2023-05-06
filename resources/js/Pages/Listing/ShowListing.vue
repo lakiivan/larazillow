@@ -10,15 +10,55 @@
         <template #header>
           Basic info
         </template>
-        <ListingPrice :price="listing.price" class="text-2xl font-bold" />
+
+        <div class="flex items-center">
+          <ListingPrice :price="listing.price" class="text-2xl font-bold" />
+          <div class="text-xs text-gray-500">
+            <ListingPrice :price="400" />
+          </div>
+        </div>
+
         <ListingSpace :listing="listing" />
         <ListingAddress :listing="listing" />
       </Box>
       <Box>
         <template #header>
-          Offer
+          Monthly Payment
         </template>
-        Make an offer
+        <div>
+          <label class="label">Interest rate {{ interestRate }}</label>
+          <input v-model.number="interestRate" type="range" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" min="0.1" max="30" step="0.1" />
+          <label class="label">Duration ({{ duration }} years)</label>
+          <input v-model.number="duration" type="range" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" min="3" max="35" step="1" />
+          <div class="text-gray-600 dark:text-gray-300 mt-2">
+            <div class="text-gray-600">Your monthly payment</div>
+            <ListingPrice :price="monthlyPayment" class="text-3xl" />
+          </div>
+          <div class="mt-2 text-gray-500">
+            <div class="flex justify-between">
+              <div>Total Paid </div>
+              <div>
+                <ListingPrice :price="totalPaid" />
+              </div>
+            </div>
+          </div>
+          <div class="mt-2 text-gray-500">
+            <div class="flex justify-between">
+              <div>Principal Paid </div>
+              <div>
+                <ListingPrice :price="listing.price" />
+              </div>
+            </div>
+          </div>
+          <div class="mt-2 text-gray-500">
+            <div class="flex justify-between">
+              <div>Interest Paid </div>
+              <div>
+                <ListingPrice :price="totalInterest" />
+              </div>
+            </div>
+          </div>
+        </div>
       </Box>
     </div>
   </div>
@@ -30,7 +70,17 @@ import ListingSpace from '@/Components/UI/ListingSpace.vue'
 import ListingPrice from '@/Components/UI/ListingPrice.vue'
 import Box from '@/Components/UI/Box.vue'
 
-defineProps ({
+import {ref} from 'vue'
+
+import {useMonthlyPayment} from '@/composables/useMonthlyPayment'
+
+const interestRate = ref(2.5)
+const duration = ref(25)
+
+const props = defineProps ({
   listing: Object,
 })
+
+const {monthlyPayment, totalPaid, totalInterest} =  useMonthlyPayment(props.listing.price, interestRate, duration) 
+
 </script>
