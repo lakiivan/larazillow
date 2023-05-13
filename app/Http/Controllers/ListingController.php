@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Listing::class);
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +31,12 @@ class ListingController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {   return inertia (
+    {   
+        // ispod je jedan nacin za proveru svake metode ponaosob, drugi nacin je kreiranje constructora u kome se provere sve metode
+        // samo tada sve metode u ListingPoliciy moraju biti definisane
+        // $this->authorize('create', Listing::class);
+        
+        return inertia (
         'Listing/CreateListing'
     );
         
@@ -36,7 +48,8 @@ class ListingController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        Listing::create(
+
+        $request->user()->listings()->create(
             $request->validate([
                 'beds' => 'required|integer|min:0|max:20',
                 'baths' => 'required|integer|min:0|max:20',
@@ -58,6 +71,9 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
+
+        //$this->authorize('view', $listing);
+
         return inertia(
             'Listing/ShowListing',
             [

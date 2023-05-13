@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
-
     
-
     public function index() {
 
         //dd(Auth::user());

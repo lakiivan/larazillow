@@ -4,9 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App;
 use Attribute;
 use Illuminate\Database\Eloquent\Casts\Attribute as CastsAttribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -51,6 +54,14 @@ class User extends Authenticatable
         return CastsAttribute::make(
             get: fn($value) => $value,
             set: fn($value) => Hash::make($value),
+        );
+    }
+
+    public function listings(): HasMany 
+    {
+        return $this-> HasMany(
+            \App\Models\Listing::class,
+            'by_user_id'
         );
     }
 }
