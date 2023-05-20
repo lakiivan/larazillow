@@ -1,9 +1,13 @@
 <template>
   <div class="flex flex-col-reverse md:grid grid-cols-12">
     <Box class="col-span-12 md:col-span-7 flex items-center w-full">
-      <div class="w-full text-center font-medium text-gray-500">
-        No images
+      <div v-if="listing.images.length" class="grid grid-cols-2 gap-1">
+        <img
+          v-for="image in listing.images" :key="image.id"
+          :src="image.src"
+        />
       </div>
+      <div v-else class="w-full text-center font-medium text-gray-500">No images</div> 
     </Box>
     <div class="md:col-span-5 flex flex-col gap-4">
       <Box>
@@ -70,9 +74,9 @@ import ListingSpace from '@/Components/UI/ListingSpace.vue'
 import ListingPrice from '@/Components/UI/ListingPrice.vue'
 import Box from '@/Components/UI/Box.vue'
 
-import {ref} from 'vue'
+import { ref } from 'vue'
 
-import {useMonthlyPayment} from '@/composables/useMonthlyPayment'
+import { useMonthlyPayment } from '@/composables/useMonthlyPayment'
 
 const interestRate = ref(2.5)
 const duration = ref(25)
