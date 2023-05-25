@@ -11,6 +11,9 @@ use Doctrine\DBAL\Driver\API\SQLite\UserDefinedFunctions;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RealtorListingAcceptOfferController;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Notifications\Events\NotificationSent;
+use App\Http\Controllers\NotificationSeenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +37,15 @@ Route::resource('listing', ListingController::class)
 Route::resource('listing.offer', ListingOfferController::class)
   ->middleware('auth')
   ->only(['store']);
+
+Route::resource('notification', NotificationController::class)
+  ->middleware('auth')
+  ->only(['index']);
+
+Route::put(
+  'notification/{notification}/seen',
+  NotificationSeenController::class
+)->middleware('auth')->name('notification.seen');
 
 Route::get('login', [AuthController::class, 'create'])
   ->name('login');
